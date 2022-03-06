@@ -1,6 +1,9 @@
-﻿using System;
+﻿using SPATemplateConversion.MVC.UI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,18 +16,34 @@ namespace SPATemplateConversion.MVC.UI.Controllers
             return View();
         }
 
-        public ActionResult About()
+        [HttpPost]
+        public JsonResult ContactAjax(ContactViewModel cvm)
         {
-            ViewBag.Message = "Your application description page.";
+            string body = $"You have received an email form <strong>{cvm.Name}</strong>. the email address given was <strong>{cvm.Email}</strong>.<br/><strong>The following message was sent:</strong> {cvm.Message}";
 
-            return View();
+            MailMessage mm = new MailMessage();
+            mm.From = new MailAddress("Classroom@jennabeckett.com");
+            mm.To.Add(new MailAddress("jbeckett@centriq.com"));
+            mm.Subject = cvm.Subject;
+            mm.Body = body;
+
+            mm.IsBodyHtml = true;
+            mm.ReplyToList.Add(cvm.Email);
+
+            SmtpClient smtp = new SmtpClient("mail.jennabeckett.com");
+            NetworkCredential cred = new NetworkCredential("classroom@jennabeckett.com", "P@ssw0rd");
+
+            smtp.Credentials = cred;
+            smtp.Send(mm);
+            return Json(cvm);
         }
 
-        public ActionResult Contact()
+        public PartialViewResult ContactConfirmation(string name, string email)
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            ViewBag.Name = name;
+            ViewBag.Email = email;
+            return PartialView("ContactConfirmation");
         }
-    }
-}
+
+    }//end class
+}//end namespace

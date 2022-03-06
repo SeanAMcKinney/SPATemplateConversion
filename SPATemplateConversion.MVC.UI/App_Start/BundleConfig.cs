@@ -24,7 +24,15 @@ namespace SPATemplateConversion.MVC.UI
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/css/bootstrap.min.css",
+                      "~/Content/css/magnific-popup.css",
+                      "~/Content/css/jquery-ui.css",
+                      "~/Content/css/owl.carousel.min.css",
+                      "~/Content/css/owl.theme.default.min.cs",
+                      "~/Content/css/bootstrap-datepicker.css",
+                      "~/Content/css/aos.css",
+                      "~/Content/css/style.css"));
         }
     }
 }
